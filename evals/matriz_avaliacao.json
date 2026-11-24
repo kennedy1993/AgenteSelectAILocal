@@ -1,0 +1,142 @@
+[
+  {
+    "id": "total_employees",
+    "question": "Quantos funcionários existem em EMPLOYEES? Retorne uma única coluna chamada TOTAL_EMPLOYEES.",
+    "required_tables": ["EMPLOYEES"],
+    "expected_columns": ["TOTAL_EMPLOYEES"],
+    "expected_rows": [[8]]
+  },
+  {
+    "id": "total_departments",
+    "question": "Quantos departamentos existem? Retorne uma única coluna chamada TOTAL_DEPARTMENTS.",
+    "required_tables": ["DEPARTMENTS"],
+    "expected_columns": ["TOTAL_DEPARTMENTS"],
+    "expected_rows": [[6]]
+  },
+  {
+    "id": "it_employees",
+    "question": "Liste EMPLOYEE_ID, FIRST_NAME e LAST_NAME dos funcionários do departamento de TI (IT).",
+    "required_tables": ["EMPLOYEES", "DEPARTMENTS"],
+    "expected_columns": ["EMPLOYEE_ID", "FIRST_NAME", "LAST_NAME"],
+    "expected_rows": [
+      [103, "Alexander", "Hunold"],
+      [104, "Bruce", "Ernst"]
+    ]
+  },
+  {
+    "id": "highest_salary_ties",
+    "question": "Quais funcionários recebem o maior salário? Retorne EMPLOYEE_ID, FIRST_NAME, LAST_NAME e SALARY, incluindo empates.",
+    "required_tables": ["EMPLOYEES"],
+    "expected_columns": ["EMPLOYEE_ID", "FIRST_NAME", "LAST_NAME", "SALARY"],
+    "expected_rows": [
+      [101, "Neena", "Yang", 17000],
+      [102, "Lex", "De Haan", 17000]
+    ]
+  },
+  {
+    "id": "department_salary_averages",
+    "question": "Para cada departamento, retorne DEPARTMENT_NAME, AVG_SALARY (média salarial arredondada para duas casas) e EMPLOYEE_COUNT.",
+    "required_tables": ["EMPLOYEES", "DEPARTMENTS"],
+    "expected_columns": ["DEPARTMENT_NAME", "AVG_SALARY", "EMPLOYEE_COUNT"],
+    "column_aliases": {
+      "AVG_SALARY": ["AVG_SALARIAL"]
+    },
+    "expected_rows": [
+      ["Accounting", 12008, 1],
+      ["Administration", 4400, 1],
+      ["Executive", 17000, 2],
+      ["IT", 7500, 2],
+      ["Sales", 8600, 1],
+      ["Shipping", 7900, 1]
+    ]
+  },
+  {
+    "id": "multiple_historical_jobs",
+    "question": "Liste EMPLOYEE_ID, FIRST_NAME e LAST_NAME dos funcionários com pelo menos dois JOB_ID diferentes em JOB_HISTORY.",
+    "required_tables": ["EMPLOYEES", "JOB_HISTORY"],
+    "expected_columns": ["EMPLOYEE_ID", "FIRST_NAME", "LAST_NAME"],
+    "expected_rows": [
+      [101, "Neena", "Yang"],
+      [176, "Jonathon", "Taylor"],
+      [200, "Jennifer", "Whalen"]
+    ]
+  },
+  {
+    "id": "hired_since_2021",
+    "question": "Liste EMPLOYEE_ID, FIRST_NAME, LAST_NAME e HIRE_DATE dos funcionários contratados em ou após 2021-01-01.",
+    "required_tables": ["EMPLOYEES"],
+    "expected_columns": ["EMPLOYEE_ID", "FIRST_NAME", "LAST_NAME", "HIRE_DATE"],
+    "expected_rows": [
+      [102, "Lex", "De Haan", "2021-01-13"],
+      [103, "Alexander", "Hunold", "2021-01-03"],
+      [104, "Bruce", "Ernst", "2022-05-21"],
+      [122, "Payam", "Kaufling", "2022-05-01"]
+    ]
+  },
+  {
+    "id": "overall_average_salary",
+    "question": "Qual é a média salarial de todos os funcionários? Retorne uma coluna chamada AVG_SALARY, arredondada para duas casas.",
+    "required_tables": ["EMPLOYEES"],
+    "expected_columns": ["AVG_SALARY"],
+    "expected_rows": [[10238.5]]
+  },
+  {
+    "id": "job_history_row_count",
+    "question": "Quantos registros existem em JOB_HISTORY? Retorne uma coluna chamada TOTAL_HISTORY_ROWS.",
+    "required_tables": ["JOB_HISTORY"],
+    "expected_columns": ["TOTAL_HISTORY_ROWS"],
+    "expected_rows": [[7]]
+  },
+  {
+    "id": "employees_by_current_job",
+    "question": "Para cada JOB_ID atualmente presente em EMPLOYEES, retorne JOB_ID e EMPLOYEE_COUNT, ordenados por JOB_ID.",
+    "required_tables": ["EMPLOYEES"],
+    "expected_columns": ["JOB_ID", "EMPLOYEE_COUNT"],
+    "expected_rows": [
+      ["AC_MGR", 1],
+      ["AD_ASST", 1],
+      ["AD_VP", 2],
+      ["IT_PROG", 2],
+      ["SA_REP", 1],
+      ["ST_MAN", 1]
+    ]
+  },
+  {
+    "id": "sales_employees",
+    "question": "Liste EMPLOYEE_ID, FIRST_NAME e LAST_NAME dos funcionários do departamento Sales.",
+    "required_tables": ["EMPLOYEES", "DEPARTMENTS"],
+    "expected_columns": ["EMPLOYEE_ID", "FIRST_NAME", "LAST_NAME"],
+    "expected_rows": [[176, "Jonathon", "Taylor"]]
+  },
+  {
+    "id": "departments_with_multiple_employees",
+    "question": "Quais departamentos têm mais de um funcionário? Retorne DEPARTMENT_NAME e EMPLOYEE_COUNT.",
+    "required_tables": ["EMPLOYEES", "DEPARTMENTS"],
+    "expected_columns": ["DEPARTMENT_NAME", "EMPLOYEE_COUNT"],
+    "expected_rows": [
+      ["Executive", 2],
+      ["IT", 2]
+    ]
+  },
+  {
+    "id": "department_with_highest_average",
+    "question": "Qual departamento tem a maior média salarial? Retorne DEPARTMENT_NAME e AVG_SALARY; inclua todos em caso de empate.",
+    "required_tables": ["EMPLOYEES", "DEPARTMENTS"],
+    "expected_columns": ["DEPARTMENT_NAME", "AVG_SALARY"],
+    "expected_rows": [["Executive", 17000]]
+  },
+  {
+    "id": "lowest_salary_employee",
+    "question": "Quem recebe o menor salário? Retorne EMPLOYEE_ID, FIRST_NAME, LAST_NAME e SALARY, incluindo empates.",
+    "required_tables": ["EMPLOYEES"],
+    "expected_columns": ["EMPLOYEE_ID", "FIRST_NAME", "LAST_NAME", "SALARY"],
+    "expected_rows": [[200, "Jennifer", "Whalen", 4400]]
+  },
+  {
+    "id": "departments_without_employees",
+    "question": "Quais departamentos não têm funcionários? Retorne DEPARTMENT_NAME.",
+    "required_tables": ["DEPARTMENTS", "EMPLOYEES"],
+    "expected_columns": ["DEPARTMENT_NAME"],
+    "expected_rows": []
+  }
+]

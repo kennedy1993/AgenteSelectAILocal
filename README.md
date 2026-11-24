@@ -77,9 +77,11 @@ Os comandos acima são apresentados como referência conceitual. A aplicação n
 ```text
 AgenteSelectAILocal/
 ├── app.py                 # Interface Streamlit e pipelines LangChain (LCEL) para os 4 modos do Select AI
+├── sql_generation.py      # Prompt e construção compartilhados da chain Text-to-SQL
 ├── database.py            # Criação automática do banco SQLite (Schema HR), extração DDL e guardrails SQL
 ├── docker-compose.yml     # Serviço Docker para execução isolada do Ollama com volume persistente
 ├── requirements.txt       # Dependências Python do projeto
+├── evals/                 # Matriz e runner de avaliação do Text-to-SQL
 ├── tests/                 # Testes automatizados do acesso somente leitura ao SQLite
 ├── docs/                  # Material de apoio para demonstração
 └── README.md              # Documentação técnica e guia de execução
@@ -125,6 +127,14 @@ Acesse no navegador em: **`http://localhost:8501`**
 ```bash
 python -m unittest discover -s tests -v
 ```
+
+### 5. Avaliar o Text-to-SQL com o Ollama local
+
+```bash
+python -m evals.executar_avaliacao
+```
+
+O runner executa os 15 casos definidos em `evals/matriz_avaliacao.json` usando o mesmo prompt SQL da aplicação, compara os resultados com o banco fictício local e grava `evals/resultados_qwen3.5_0.8b.md`. O comando retorna código de saída diferente de zero se algum caso falhar; isso indica falha de avaliação, não necessariamente erro do runner.
 
 ---
 

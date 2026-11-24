@@ -32,6 +32,7 @@ O projeto demonstra como uma pergunta em Português pode ser convertida em SQL e
 - A consulta de mudanças de cargo retornou os três nomes esperados em `runsql`; `narrate` mencionou os mesmos nomes.
 - O teste inicial identificou uma resposta incorreta de `chat` sobre `showsql`. O prompt foi esclarecido e o reteste descreveu corretamente que `showsql` gera SQL sem executá-lo.
 - Os quatro testes automatizados do banco passaram com `python -m unittest discover -s tests -v`.
+- A primeira matriz Text-to-SQL contém 15 perguntas e obteve 8 aprovações (53,3%) com `qwen3.5:0.8b`, em uma única execução a temperatura 0. Consulte o [relatório detalhado](../evals/resultados_qwen3.5_0.8b.md); esse resultado é uma linha de base, não uma avaliação estatística.
 
 ## Mensagens-chave e limites
 
