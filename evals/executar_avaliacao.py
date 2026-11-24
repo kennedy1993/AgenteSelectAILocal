@@ -235,7 +235,8 @@ def main():
         status = "PASS" if result["passed"] else "FAIL"
         print(f"  {status} ({result['elapsed_seconds']:.2f}s)", flush=True)
 
-    report_path = Path(__file__).with_name("resultados_qwen3.5_0.8b.md")
+    model_slug = re.sub(r"[^A-Za-z0-9._-]+", "_", args.model)
+    report_path = Path(__file__).with_name(f"resultados_{model_slug}.md")
     report_path.write_text(
         gerar_relatorio(results, args.model, args.ollama_url), encoding="utf-8"
     )

@@ -134,7 +134,7 @@ python -m unittest discover -s tests -v
 python -m evals.executar_avaliacao
 ```
 
-O runner executa os 15 casos definidos em `evals/matriz_avaliacao.json` usando o mesmo prompt SQL da aplicação, compara os resultados com o banco fictício local e grava `evals/resultados_qwen3.5_0.8b.md`. O comando retorna código de saída diferente de zero se algum caso falhar; isso indica falha de avaliação, não necessariamente erro do runner.
+O runner executa os 15 casos definidos em `evals/matriz_avaliacao.json` usando o mesmo prompt SQL da aplicação, compara os resultados com o banco fictício local e grava um relatório `evals/resultados_<modelo>.md`. Para comparar outro modelo instalado no Ollama, use, por exemplo, `python -m evals.executar_avaliacao --model qwen3.5:2b`. O comando retorna código de saída diferente de zero se algum caso falhar; isso indica falha de avaliação, não necessariamente erro do runner.
 
 ---
 
