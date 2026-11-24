@@ -6,7 +6,7 @@
 ![SQLite](https://img.shields.io/badge/SQLite-Schema_HR_Oracle-003B57?logo=sqlite&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Data_App-FF4B4B?logo=streamlit&logoColor=white)
 
-Uma implementação **100% local, gratuita e open-source** inspirada no recurso **Select AI** do **Oracle AI Database 26ai**. Este projeto permite consultar bancos de dados relacionais (utilizando o clássico schema **HR** da Oracle) por meio de **linguagem natural em Português do Brasil (Text-to-SQL / NL2SQL)**, orquestrado com **LangChain (LCEL)**, **Ollama em Docker** e interface interativa em **Streamlit**.
+Uma implementação **local e sem custo de API** inspirada no recurso **Select AI** do **Oracle AI Database 26ai**. Este projeto demonstra consultas a um conjunto de dados fictício, baseado em um subconjunto do schema **HR** da Oracle, por meio de **linguagem natural em Português do Brasil (Text-to-SQL / NL2SQL)**, orquestrado com **LangChain (LCEL)**, **Ollama em Docker** e interface interativa em **Streamlit**. O protótipo não se conecta ao Oracle Database nem deve ser usado com dados reais de clientes ou funcionários.
 
 ---
 
@@ -14,10 +14,10 @@ Uma implementação **100% local, gratuita e open-source** inspirada no recurso 
 
 Consultar dados estruturados em bancos relacionais normalmente exige domínio de SQL (`JOINs`, `GROUP BY`, `HAVING`, subqueries). Recursos modernos como o *Oracle 26ai Select AI* democratizam esse acesso traduzindo perguntas em linguagem natural para SQL, mas exigem **assinaturas de APIs pagas na nuvem** (OpenAI, OCI Generative AI, Cohere) e envio de metadados corporativos para fora do ambiente local.
 
-Este projeto demonstra como construir a **mesma experiência do Select AI rodando 100% localmente**:
-- **Zero Custo de API & Privacidade Total:** O motor de IA roda localmente em container Docker via **Ollama** (`qwen3.5:0.8b`).
-- **4 Modos Nativos do Select AI (`runsql`, `showsql`, `narrate` e `chat`):** Reproduz fielmente os operadores do Select AI em uma interface visual moderna.
-- **Guardrails de Segurança (Read-Only SQL):** Validação por expressão regular que bloqueia qualquer instrução de modificação (`DROP`, `DELETE`, `UPDATE`, `INSERT`, `ALTER`), garantindo execução segura apenas de consultas `SELECT`.
+Este projeto demonstra uma experiência semelhante em ambiente local:
+- **Inferência local sem custo de API:** O modelo roda em container Docker via **Ollama** (`qwen3.5:0.8b`); a imagem e o modelo precisam ser baixados na configuração inicial.
+- **4 modos inspirados no Select AI (`runsql`, `showsql`, `narrate` e `chat`):** Demonstra os fluxos em uma interface visual local; não reproduz nem substitui o produto Oracle.
+- **Proteção de leitura no SQLite:** Validação de comandos e abertura do arquivo do banco em modo somente leitura. Isso é uma proteção para a demonstração, não uma certificação de segurança para produção.
 
 ---
 
@@ -48,14 +48,16 @@ flowchart LR
 
 ---
 
-## Comparativo: Modos do Select AI Implementados
+## Modos demonstrados (inspirados no Select AI)
 
 | Modo Select AI | Comando Equivalente no Oracle 26ai | O que a Aplicação Faz |
 | :--- | :--- | :--- |
-| **`runsql`** | `SELECT AI runsql <pergunta>;` | Converte a pergunta em SQL, valida no *guardrail* de segurança, executa no banco `HR` e exibe a tabela interativa + query utilizada. |
-| **`showsql`** | `SELECT AI showsql <pergunta>;` | Gera e exibe apenas a instrução SQL correspondente à pergunta em linguagem natural, sem executar no banco. |
-| **`narrate`** | `SELECT AI narrate <pergunta>;` | Gera o SQL, executa a consulta no banco e aciona uma segunda *chain* LCEL para narrar os resultados em Português do Brasil. |
-| **`chat`** | `SELECT AI chat <pergunta>;` | Conversa livre com o LLM local sobre conceitos de banco de dados, modelagem relacional, SQL e RH. |
+| **`runsql`** | `SELECT AI runsql <pergunta>;` | Converte a pergunta em SQL, valida a consulta, executa no SQLite local e exibe a tabela + query utilizada. |
+| **`showsql`** | `SELECT AI showsql <pergunta>;` | Gera e exibe a instrução SQL, sem executá-la no banco. |
+| **`narrate`** | `SELECT AI narrate <pergunta>;` | Gera o SQL, executa no SQLite local e usa outra *chain* LCEL para narrar os resultados em Português do Brasil. |
+| **`chat`** | `SELECT AI chat <pergunta>;` | Conversa livre com o LLM local; não consulta os dados do banco. |
+
+Os comandos acima são apresentados como referência conceitual. A aplicação não envia comandos `SELECT AI` a um banco Oracle.
 
 ---
 
@@ -78,6 +80,8 @@ AgenteSelectAILocal/
 ├── database.py            # Criação automática do banco SQLite (Schema HR), extração DDL e guardrails SQL
 ├── docker-compose.yml     # Serviço Docker para execução isolada do Ollama com volume persistente
 ├── requirements.txt       # Dependências Python do projeto
+├── tests/                 # Testes automatizados do acesso somente leitura ao SQLite
+├── docs/                  # Material de apoio para demonstração
 └── README.md              # Documentação técnica e guia de execução
 ```
 
@@ -116,6 +120,12 @@ streamlit run app.py
 
 Acesse no navegador em: **`http://localhost:8501`**
 
+### 4. Executar os testes automatizados
+
+```bash
+python -m unittest discover -s tests -v
+```
+
 ---
 
 ## Exemplos de Consultas em Português para Testar
@@ -128,3 +138,9 @@ Acesse no navegador em: **`http://localhost:8501`**
    - *Gera agregação com `AVG(SALARY)` e `COUNT(EMPLOYEE_ID)` agrupada por departamento.*
 4. **"Quem são os funcionários do departamento de TI (IT)?"**
    - *Filtra colaboradores pelo nome do departamento na tabela `DEPARTMENTS`.*
+
+---
+
+## Demonstração para gestor ou cliente
+
+Consulte o [roteiro de apresentação](docs/roteiro-apresentacao.md) para a sequência sugerida, pré-requisitos, resultados verificados e limitações do protótipo.

@@ -150,7 +150,7 @@ def limpar_query_sql(texto_llm: str) -> str:
 
 
 def executar_consulta_sql(sql_query: str) -> pd.DataFrame:
-    """Executa apenas consultas SELECT (somente leitura) no banco SQLite local."""
+    """Executa consultas de leitura no banco SQLite local."""
     query_limpa = limpar_query_sql(sql_query)
 
     # Guardrail de seguranca: bloqueia comandos destrutivos (DML/DDL)
@@ -163,7 +163,7 @@ def executar_consulta_sql(sql_query: str) -> pd.DataFrame:
     if not query_limpa.upper().startswith(("SELECT", "WITH")):
         raise ValueError(f"A instrucao gerada nao e um SELECT valido: {query_limpa}")
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(f"{DB_PATH.as_uri()}?mode=ro", uri=True)
     try:
         df = pd.read_sql_query(query_limpa, conn)
         return df
